@@ -1,0 +1,186 @@
+version: "3"
+services:
+  # Configuration Servers
+  configsvr1:
+    image: mongo:latest
+    command: mongod --configsvr --replSet confReplSet --port 27201 --logpath /data/logs/configsvr1.log --logappend
+    volumes:
+      - ./data/config1:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27201:27201"
+    networks:
+      - mongo-cluster
+
+  configsvr2:
+    image: mongo:latest
+    command: mongod --configsvr --replSet confReplSet --port 27202 --logpath /data/logs/configsvr2.log --logappend
+    volumes:
+      - ./data/config2:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27202:27202"
+    networks:
+      - mongo-cluster
+
+  configsvr3:
+    image: mongo:latest
+    command: mongod --configsvr --replSet confReplSet --port 27203 --logpath /data/logs/configsvr3.log --logappend
+    volumes:
+      - ./data/config3:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27203:27203"
+    networks:
+      - mongo-cluster
+
+  # Shard 1
+  shard1_1:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard1 --port 27301 --logpath /data/logs/shard1_1.log --logappend
+    volumes:
+      - ./data/shard1_1:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27301:27301"
+    networks:
+      - mongo-cluster
+
+  shard1_2:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard1 --port 27302 --logpath /data/logs/shard1_2.log --logappend
+    volumes:
+      - ./data/shard1_2:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27302:27302"
+    networks:
+      - mongo-cluster
+
+  shard1_3:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard1 --port 27303 --logpath /data/logs/shard1_3.log --logappend
+    volumes:
+      - ./data/shard1_3:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27303:27303"
+    networks:
+      - mongo-cluster
+
+  # Shard 2
+  shard2_1:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard2 --port 27401 --logpath /data/logs/shard2_1.log --logappend
+    volumes:
+      - ./data/shard2_1:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27401:27401"
+    networks:
+      - mongo-cluster
+
+  shard2_2:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard2 --port 27402 --logpath /data/logs/shard2_2.log --logappend
+    volumes:
+      - ./data/shard2_2:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27402:27402"
+    networks:
+      - mongo-cluster
+
+  shard2_3:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard2 --port 27403 --logpath /data/logs/shard2_3.log --logappend
+    volumes:
+      - ./data/shard2_3:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27403:27403"
+    networks:
+      - mongo-cluster
+
+  # Shard 3
+  shard3_1:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard3 --port 27501 --logpath /data/logs/shard3_1.log --logappend
+    volumes:
+      - ./data/shard3_1:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27501:27501"
+    networks:
+      - mongo-cluster
+
+  shard3_2:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard3 --port 27502 --logpath /data/logs/shard3_2.log --logappend
+    volumes:
+      - ./data/shard3_2:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27502:27502"
+    networks:
+      - mongo-cluster
+
+  shard3_3:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard3 --port 27503 --logpath /data/logs/shard3_3.log --logappend
+    volumes:
+      - ./data/shard3_3:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27503:27503"
+    networks:
+      - mongo-cluster
+
+  # Shard 4
+  shard4_1:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard4 --port 27601 --logpath /data/logs/shard4_1.log --logappend
+    volumes:
+      - ./data/shard4_1:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27601:27601"
+    networks:
+      - mongo-cluster
+
+  shard4_2:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard4 --port 27602 --logpath /data/logs/shard4_2.log --logappend
+    volumes:
+      - ./data/shard4_2:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27602:27602"
+    networks:
+      - mongo-cluster
+
+  shard4_3:
+    image: mongo:latest
+    command: mongod --shardsvr --replSet shard4 --port 27603 --logpath /data/logs/shard4_3.log --logappend
+    volumes:
+      - ./data/shard4_3:/data/db
+      - ./logs:/data/logs
+    ports:
+      - "27603:27603"
+    networks:
+      - mongo-cluster
+
+  # Routing Service (mongos)
+  mongos:
+    image: mongo:latest
+    command: mongos --configdb confReplSet/configsvr1:27201,configsvr2:27202,configsvr3:27203 --port 27100 --logpath /data/logs/mongos_27100.log --logappend
+    volumes:
+      - ./logs:/data/logs
+    ports:
+      - "27100:27100"
+    networks:
+      - mongo-cluster
+
+networks:
+  mongo-cluster:
+    driver: bridge

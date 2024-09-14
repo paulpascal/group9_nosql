@@ -4,6 +4,8 @@
 
 Ce projet consiste en la mise en place d'un modèle de sharding pour MongoDB, afin de démontrer l'efficacité de ce modèle pour gérer de grandes quantités de données. Nous avons utilisé Docker pour créer un environnement virtuel afin de configurer et tester notre cluster MongoDB avec sharding.
 
+![Modele de Sharding a implementer](./MongoDB_Devoir.png)
+
 ## Technologies Utilisées
 
 - MongoDB : Base de données NoSQL.

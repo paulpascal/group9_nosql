@@ -18,7 +18,7 @@ Ce projet consiste en la mise en place d'un modèle de sharding pour MongoDB, af
    Connectez-vous au conteneur du serveur de configuration et initialisez le replica set :
 
 ```bash
-docker exec -it devoir-configsvr1-1 mongosh --port 27201
+docker exec -it group9_nosql-configsvr1-1 mongosh --port 27201
 ```
 
 ```javascript
@@ -26,9 +26,9 @@ rs.initiate({
   _id: "confReplSet",
   configsvr: true,
   members: [
-    { _id: 0, host: "devoir-configsvr1-1:27201" },
-    { _id: 1, host: "devoir-configsvr2-1:27202" },
-    { _id: 2, host: "devoir-configsvr3-1:27203" },
+    { _id: 0, host: "group9_nosql-configsvr1-1:27201" },
+    { _id: 1, host: "group9_nosql-configsvr2-1:27202" },
+    { _id: 2, host: "group9_nosql-configsvr3-1:27203" },
   ],
 });
 ```
@@ -39,16 +39,16 @@ rs.initiate({
 ### Shard 1 :
 
 ```bash
-docker exec -it devoir-shard1_1-1 mongosh --port 27301
+docker exec -it group9_nosql-shard1_1-1 mongosh --port 27301
 ```
 
 ```javascript
 rs.initiate({
   _id: "shard1",
   members: [
-    { _id: 0, host: "devoir-shard1_1-1:27301" },
-    { _id: 1, host: "devoir-shard1_2-1:27302" },
-    { _id: 2, host: "devoir-shard1_3-1:27303" },
+    { _id: 0, host: "group9_nosql-shard1_1-1:27301" },
+    { _id: 1, host: "group9_nosql-shard1_2-1:27302" },
+    { _id: 2, host: "group9_nosql-shard1_3-1:27303" },
   ],
 });
 ```
@@ -56,16 +56,16 @@ rs.initiate({
 ### Shard 2 :
 
 ```bash
-docker exec -it devoir-shard2_1-1 mongosh --port 27401
+docker exec -it group9_nosql-shard2_1-1 mongosh --port 27401
 ```
 
 ```javascript
 rs.initiate({
   _id: "shard2",
   members: [
-    { _id: 0, host: "devoir-shard2_1-1:27401" },
-    { _id: 1, host: "devoir-shard2_2-1:27402" },
-    { _id: 2, host: "devoir-shard2_3-1:27403" },
+    { _id: 0, host: "group9_nosql-shard2_1-1:27401" },
+    { _id: 1, host: "group9_nosql-shard2_2-1:27402" },
+    { _id: 2, host: "group9_nosql-shard2_3-1:27403" },
   ],
 });
 ```
@@ -73,16 +73,16 @@ rs.initiate({
 ### Shard 3 :
 
 ```bash
-docker exec -it devoir-shard3_1-1 mongosh --port 27501
+docker exec -it group9_nosql-shard3_1-1 mongosh --port 27501
 ```
 
 ```javascript
 rs.initiate({
   _id: "shard3",
   members: [
-    { _id: 0, host: "devoir-shard3_1-1:27501" },
-    { _id: 1, host: "devoir-shard3_2-1:27502" },
-    { _id: 2, host: "devoir-shard3_3-1:27503" },
+    { _id: 0, host: "group9_nosql-shard3_1-1:27501" },
+    { _id: 1, host: "group9_nosql-shard3_2-1:27502" },
+    { _id: 2, host: "group9_nosql-shard3_3-1:27503" },
   ],
 });
 ```
@@ -90,16 +90,16 @@ rs.initiate({
 ### Shard 4 :
 
 ```bash
-docker exec -it devoir-shard4_1-1 mongosh --port 27601
+docker exec -it group9_nosql-shard4_1-1 mongosh --port 27601
 ```
 
 ```javascript
 rs.initiate({
   _id: "shard4",
   members: [
-    { _id: 0, host: "devoir-shard4_1-1:27601" },
-    { _id: 1, host: "devoir-shard4_2-1:27602" },
-    { _id: 2, host: "devoir-shard4_3-1:27603" },
+    { _id: 0, host: "group9_nosql-shard4_1-1:27601" },
+    { _id: 1, host: "group9_nosql-shard4_2-1:27602" },
+    { _id: 2, host: "group9_nosql-shard4_3-1:27603" },
   ],
 });
 ```
@@ -110,9 +110,9 @@ rs.initiate({
 rs.reconfig({
   _id: "shard4",
   members: [
-    { _id: 0, host: "devoir-shard4_1-1:27601" },
-    { _id: 1, host: "devoir-shard4_2-1:27602" },
-    { _id: 2, host: "devoir-shard4_3-1:27603" },
+    { _id: 0, host: "group9_nosql-shard4_1-1:27601" },
+    { _id: 1, host: "group9_nosql-shard4_2-1:27602" },
+    { _id: 2, host: "group9_nosql-shard4_3-1:27603" },
   ],
 });
 ```
@@ -125,14 +125,14 @@ rs.stepDown(); // Election
    Ajoutez les shards au cluster :
 
 ```bash
-docker exec -it devoir-mongos-1 mongosh --port 27100
+docker exec -it group9_nosql-mongos-1 mongosh --port 27100
 ```
 
 ```javascript
-sh.addShard("shard1/devoir-shard1_1-1:27301,devoir-shard1_2-1:27302") # deux instances participent
-sh.addShard("shard2/devoir-shard2_1-1:27401,devoir-shard2_2-1:27402,devoir-shard2_3-1:27403")
-sh.addShard("shard3/devoir-shard3_1-1:27501,devoir-shard3_2-1:27502,devoir-shard3_3-1:27503")
-sh.addShard("shard4/devoir-shard4_1-1:27601,devoir-shard4_2-1:27602") # deux instances participent
+sh.addShard("shard1/group9_nosql-shard1_1-1:27301,group9_nosql-shard1_2-1:27302") # deux instances participent
+sh.addShard("shard2/group9_nosql-shard2_1-1:27401,group9_nosql-shard2_2-1:27402,group9_nosql-shard2_3-1:27403")
+sh.addShard("shard3/group9_nosql-shard3_1-1:27501,group9_nosql-shard3_2-1:27502,group9_nosql-shard3_3-1:27503")
+sh.addShard("shard4/group9_nosql-shard4_1-1:27601,group9_nosql-shard4_2-1:27602") # deux instances participent
 ```
 
 4. Connexion au Cluster MongoDB
@@ -140,7 +140,7 @@ sh.addShard("shard4/devoir-shard4_1-1:27601,devoir-shard4_2-1:27602") # deux ins
 Connectez-vous au cluster MongoDB :
 
 ```bash
-docker exec -it devoir-mongos-1 mongosh --port 27100
+docker exec -it group9_nosql-mongos-1 mongosh --port 27100
 ```
 
 5. Création d'une Nouvelle Base de Données

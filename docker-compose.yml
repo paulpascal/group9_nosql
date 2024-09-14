@@ -59,7 +59,7 @@ services:
 
   shard1_3:
     image: mongo:latest
-    command: mongod --shardsvr --replSet shard1 --port 27303 --logpath /data/logs/shard1_3.log --logappend
+    command: mongod --replSet shard1 --port 27303 --logpath /data/logs/shard1_3.log --logappend
     volumes:
       - ./data/shard1_3:/data/db
       - ./logs:/data/logs
@@ -161,7 +161,7 @@ services:
 
   shard4_3:
     image: mongo:latest
-    command: mongod --shardsvr --replSet shard4 --port 27603 --logpath /data/logs/shard4_3.log --logappend
+    command: mongod --replSet shard4 --port 27603 --logpath /data/logs/shard4_3.log --logappend
     volumes:
       - ./data/shard4_3:/data/db
       - ./logs:/data/logs

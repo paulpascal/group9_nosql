@@ -18,7 +18,7 @@ Ce projet consiste en la mise en place d'un modèle de sharding pour MongoDB, af
    Connectez-vous au conteneur du serveur de configuration et initialisez le replica set :
 
 ```bash
-docker exec -it group9_nosql-configsvr1-1 mongosh --port 27201
+docker exec -it group9_nosql-configsvr1-1 mongosh --port 27201 admin
 ```
 
 ```javascript
@@ -39,7 +39,7 @@ rs.initiate({
 ### Shard 1 :
 
 ```bash
-docker exec -it group9_nosql-shard1_1-1 mongosh --port 27301
+docker exec -it group9_nosql-shard1_1-1 mongosh --port 27301 admin
 ```
 
 ```javascript
@@ -56,7 +56,7 @@ rs.initiate({
 ### Shard 2 :
 
 ```bash
-docker exec -it group9_nosql-shard2_1-1 mongosh --port 27401
+docker exec -it group9_nosql-shard2_1-1 mongosh --port 27401 admin
 ```
 
 ```javascript
@@ -73,7 +73,7 @@ rs.initiate({
 ### Shard 3 :
 
 ```bash
-docker exec -it group9_nosql-shard3_1-1 mongosh --port 27501
+docker exec -it group9_nosql-shard3_1-1 mongosh --port 27501 admin
 ```
 
 ```javascript
@@ -90,7 +90,7 @@ rs.initiate({
 ### Shard 4 :
 
 ```bash
-docker exec -it group9_nosql-shard4_1-1 mongosh --port 27601
+docker exec -it group9_nosql-shard4_1-1 mongosh --port 27601 admin
 ```
 
 ```javascript
@@ -159,7 +159,7 @@ sh.enableSharding("dit")
 db.createCollection("students")
 sh.shardCollection("dit.students", { matricule: "hashed" }, false, { "numInitialChunks": 1, "chunkSize": 10 })
 
-db.students.insert({ name: 'John Doe', matricule: 'AD23'})
+db.students.insert({ name: 'John Doe', matricule: 1 })
 show collections
 
 sh.status()
